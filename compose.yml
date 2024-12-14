@@ -1,15 +1,21 @@
 services:
   app:
+    command: >
+      sh -c "uvicorn main:app --reload --host=0.0.0.0"
     container_name: viya.app
     build:
       context: .
       dockerfile: ./.docker/Dockerfile
+    volumes:
+      - .:/opt/project
     ports:
       - 8000:8000
     networks:
       - viya
     depends_on:
       - db
+    environment:
+      PYTHONPATH: ./:./src
   db:
     container_name: viya.postgres
     image: postgres
