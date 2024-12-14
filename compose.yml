@@ -1,0 +1,39 @@
+services:
+  app:
+    container_name: viya.app
+    build:
+      context: .
+      dockerfile: ./.docker/Dockerfile
+    ports:
+      - 8000:8000
+    networks:
+      - viya
+    depends_on:
+      - db
+  db:
+    container_name: viya.postgres
+    image: postgres
+    environment:
+      - POSTGRES_USER=viya
+      - POSTGRES_PASSWORD=viya123
+      - POSTGRES_DB=viya
+      - PGDATA=/data/postgres
+    volumes:
+      - db:/data/postgres
+    ports:
+      - "5332:5432"
+    networks:
+      - viya
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d postgres" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+networks:
+  viya:
+    driver: bridge
+
+volumes:
+  db:
