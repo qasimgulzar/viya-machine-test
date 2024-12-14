@@ -11,9 +11,3 @@ local-requirements:
 base-requirements: pre-requirements
 	pip-sync requirements/base.txt
 	make local-requirements
-#init-alembic:
-#	docker compose exec app alembic init -t async migrations
-#make-migrations:
-#	docker compose exec app alembic revision --autogenerate
-#migrate:
-#	docker compose exec app alembic upgrade head

@@ -1,0 +1,13 @@
+SQL_STATEMENTS:
+  SELECT_ALL_RANKINGS: |
+    SELECT rank.id,
+    rank.name,
+    rank.net_points,
+    CASE
+    WHEN CAST(R.c as numeric) > 1 THEN R.id
+    ELSE rank.id::text
+    END AS ranking
+    FROM rank left outer join (select concat(min(id), 'T') as id, CAST(count(*) as numeric) as c, net_points
+    from rank
+    group by net_points) R on R.net_points = rank.net_points
+    ORDER BY rank.net_points desc;
