@@ -19,7 +19,7 @@ for the provided profiles
 To start a local development server, run:
 
 ```bash
-docker-compose up
+docker compose up app
 ```
 
 ### How to access the application.
